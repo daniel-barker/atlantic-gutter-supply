@@ -18,6 +18,8 @@ interface ProductFormData {
   sku: string;
   imageUrl: string;
   inStock: boolean;
+  featured: boolean;
+  featuredOrder: string;
   categoryId: string;
 }
 
@@ -45,6 +47,8 @@ export default function ProductForm({ initialData, productId }: ProductFormProps
       sku: "",
       imageUrl: "",
       inStock: true,
+      featured: false,
+      featuredOrder: "",
       categoryId: "",
     },
   });
@@ -62,6 +66,11 @@ export default function ProductForm({ initialData, productId }: ProductFormProps
         }
         const data = await response.json();
         setCategories(data);
+        
+        // If we have initialData with a categoryId, ensure it's properly set
+        if (initialData?.categoryId) {
+          setValue("categoryId", initialData.categoryId);
+        }
       } catch (error) {
         console.error("Error fetching categories:", error);
         setError("Failed to load categories. Please try again.");
@@ -69,7 +78,26 @@ export default function ProductForm({ initialData, productId }: ProductFormProps
     }
 
     fetchCategories();
-  }, []);
+  }, [initialData, setValue]);
+  
+  // Ensure form values are properly set when initialData changes
+  useEffect(() => {
+    if (initialData) {
+      // Set categoryId if available
+      if (initialData.categoryId) {
+        setValue("categoryId", initialData.categoryId);
+      }
+      
+      // Explicitly set boolean values
+      if (initialData.inStock !== undefined) {
+        setValue("inStock", initialData.inStock);
+      }
+      
+      if (initialData.featured !== undefined) {
+        setValue("featured", initialData.featured);
+      }
+    }
+  }, [initialData, setValue]);
 
   // Auto-generate slug from name
   useEffect(() => {
@@ -138,6 +166,19 @@ export default function ProductForm({ initialData, productId }: ProductFormProps
     setError("");
 
     try {
+      // Ensure boolean fields are properly converted
+      // Use explicit boolean values to avoid any string conversion issues
+      const processedData = {
+        ...data,
+        inStock: String(data.inStock) === "true" || data.inStock === true,
+        featured: String(data.featured) === "true" || data.featured === true,
+        featuredOrder: data.featuredOrder ? data.featuredOrder : ""
+      };
+
+      console.log("Initial form data:", initialData);
+      console.log("Form data received from form:", data);
+      console.log("Processed data being submitted:", processedData);
+
       const url = productId
         ? `/api/products/${productId}`
         : "/api/products";
@@ -149,7 +190,7 @@ export default function ProductForm({ initialData, productId }: ProductFormProps
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(processedData),
       });
 
       if (!response.ok) {
@@ -260,6 +301,7 @@ export default function ProductForm({ initialData, productId }: ProductFormProps
               id="categoryId"
               {...register("categoryId", { required: "Category is required" })}
               className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+              defaultValue={initialData?.categoryId || ""}
             >
               <option value="">Select a category</option>
               {categories.map((category) => (
@@ -281,14 +323,48 @@ export default function ProductForm({ initialData, productId }: ProductFormProps
           <div className="mt-2">
             <select
               id="inStock"
-              {...register("inStock", { 
-                setValueAs: (value) => value === "true" ? true : false
-              })}
+              {...register("inStock")}
               className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+              value={watch("inStock") ? "true" : "false"}
+              onChange={(e) => setValue("inStock", e.target.value === "true")}
             >
               <option value="true">In Stock</option>
               <option value="false">Out of Stock</option>
             </select>
+          </div>
+        </div>
+
+        <div className="sm:col-span-3">
+          <label htmlFor="featured" className="block text-sm font-medium leading-6 text-gray-900">
+            Featured on Homepage
+          </label>
+          <div className="mt-2">
+            <select
+              id="featured"
+              {...register("featured")}
+              className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+              value={watch("featured") ? "true" : "false"}
+              onChange={(e) => setValue("featured", e.target.value === "true")}
+            >
+              <option value="false">Not Featured</option>
+              <option value="true">Featured</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="sm:col-span-3">
+          <label htmlFor="featuredOrder" className="block text-sm font-medium leading-6 text-gray-900">
+            Featured Display Order
+          </label>
+          <div className="mt-2">
+            <input
+              type="number"
+              id="featuredOrder"
+              placeholder="1, 2, 3, etc."
+              {...register("featuredOrder")}
+              className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+            />
+            <p className="mt-1 text-xs text-gray-500">Lower numbers appear first. Leave empty for automatic ordering.</p>
           </div>
         </div>
 

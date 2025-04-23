@@ -12,6 +12,8 @@ interface ProductFormWrapperProps {
     sku: string;
     imageUrl: string;
     inStock: boolean;
+    featured: boolean;
+    featuredOrder: string;
     categoryId: string;
   };
   productId: string;

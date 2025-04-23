@@ -83,7 +83,9 @@ export async function PUT(
         price: data.price !== undefined ? parseFloat(data.price) : null,
         sku: data.sku,
         imageUrl: data.imageUrl,
-        inStock: data.inStock !== undefined ? Boolean(data.inStock) : true,
+        inStock: data.inStock === true || String(data.inStock).toLowerCase() === 'true',
+        featured: data.featured === true || String(data.featured).toLowerCase() === 'true',
+        featuredOrder: data.featuredOrder ? parseInt(data.featuredOrder) : null,
         categoryId: data.categoryId,
       },
       include: {

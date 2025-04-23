@@ -43,6 +43,8 @@ model Product {
   sku         String?
   imageUrl    String?
   inStock     Boolean   @default(true)
+  featured    Boolean   @default(false)
+  featuredOrder Int?    // Optional ordering for featured products
   categoryId  String
   category    Category  @relation(fields: [categoryId], references: [id])
   createdAt   DateTime  @default(now())

@@ -18,6 +18,8 @@ interface Product {
   sku?: string;
   imageUrl?: string;
   inStock: boolean;
+  featured: boolean;
+  featuredOrder?: number;
   categoryId: string;
   category?: Category;
 }
@@ -119,6 +121,8 @@ export default function ProductEditClient() {
     sku: product.sku || "",
     imageUrl: product.imageUrl || "",
     inStock: product.inStock,
+    featured: product.featured,
+    featuredOrder: product.featuredOrder?.toString() || "",
     categoryId: product.categoryId,
   };
 

@@ -1,19 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
-
-async function getFeaturedProducts() {
-  const products = await prisma.product.findMany({
-    take: 4,
-    include: {
-      category: true,
-    },
-  });
-  return products;
-}
+import FeaturedProductsCarousel from "@/components/FeaturedProductsCarousel";
 
 export default async function Home() {
-  const featuredProducts = await getFeaturedProducts();
 
   return (
     <>
@@ -53,7 +42,7 @@ export default async function Home() {
       </section>
 
       {/* Quick Icon Row */}
-      <section className="py-12 bg-white">
+      {/* <section className="py-12 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="flex flex-col items-center">
@@ -90,7 +79,7 @@ export default async function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Featured Products */}
       <section className="py-16 bg-white">
@@ -102,47 +91,8 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {featuredProducts.map((product) => (
-              <div key={product.id} className="group relative overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
-                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200">
-                  <div className="h-64 w-full bg-gray-200 relative">
-                    {product.imageUrl ? (
-                      <Image
-                        src={product.imageUrl}
-                        alt={product.name}
-                        fill
-                        className="object-cover object-center"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-gray-500">
-                        No image available
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="p-4">
-                  <span className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800">
-                    {product.category.name}
-                  </span>
-                  <h3 className="mt-2 text-lg font-medium text-gray-900">{product.name}</h3>
-                  <p className="mt-1 text-sm text-gray-500 line-clamp-2">{product.description}</p>
-                  <div className="mt-3 flex items-center justify-between">
-                    {product.price ? (
-                      <p className="text-lg font-medium text-gray-900">${product.price.toFixed(2)}</p>
-                    ) : (
-                      <p className="text-sm italic text-gray-500">Contact for pricing</p>
-                    )}
-                    <Link
-                      href={`/products/${product.slug}`}
-                      className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700"
-                    >
-                      View Details
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="mt-12">
+            <FeaturedProductsCarousel />
           </div>
 
           <div className="mt-12 text-center">
@@ -165,7 +115,7 @@ export default async function Home() {
               Your trusted partner since 1984
             </p>
           </div>
-          
+
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 items-center">
             <div>
               <p className="text-lg text-gray-600">
@@ -174,7 +124,7 @@ export default async function Home() {
               <p className="mt-4 text-lg text-gray-600">
                 Our commitment to being a true partner with our customers has never changed. We offer a comprehensive selection of gutters, downspouts, and accessories in 20 colors of Aluminum, Copper, Galvanized, Galvalume and Lead Coated Copper.
               </p>
-              
+
               <div className="mt-8 grid grid-cols-2 gap-4">
                 <div className="flex items-start">
                   <div className="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-md bg-blue-600 text-white">
@@ -187,7 +137,7 @@ export default async function Home() {
                     <p className="mt-1 text-gray-600">Our fleet of trucks delivers to all areas weekly, with on-site gutter roll-out services available.</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-md bg-blue-600 text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -200,7 +150,7 @@ export default async function Home() {
                     <p className="mt-1 text-gray-600">We maintain a large stock of materials, ensuring everything is available when you need it.</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-md bg-blue-600 text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -212,7 +162,7 @@ export default async function Home() {
                     <p className="mt-1 text-gray-600">Competitive pricing with bulk discounts that can't be beat, without sacrificing quality.</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-md bg-blue-600 text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -226,7 +176,7 @@ export default async function Home() {
                 </div>
               </div>
             </div>
-            
+
             <div className="relative h-96 overflow-hidden rounded-lg">
               <Image
                 src="/images/storefront.jpg"
@@ -266,7 +216,7 @@ export default async function Home() {
                 Browse materials <span className="ml-1" aria-hidden="true">&rarr;</span>
               </Link>
             </div>
-            
+
             <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
               <div className="flex items-center mb-4">
                 <div className="flex-shrink-0 h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
@@ -283,7 +233,7 @@ export default async function Home() {
                 View styles <span className="ml-1" aria-hidden="true">&rarr;</span>
               </Link>
             </div>
-            
+
             <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
               <div className="flex items-center mb-4">
                 <div className="flex-shrink-0 h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
@@ -300,7 +250,7 @@ export default async function Home() {
                 Get advice <span className="ml-1" aria-hidden="true">&rarr;</span>
               </Link>
             </div>
-            
+
             <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
               <div className="flex items-center mb-4">
                 <div className="flex-shrink-0 h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
@@ -328,7 +278,7 @@ export default async function Home() {
           <p className="mx-auto mt-6 max-w-xl text-xl text-blue-100">
             We're here to help with each and every project, from simple to complex!
           </p>
-          
+
           <div className="mt-10 grid md:grid-cols-3 gap-8 text-left max-w-4xl mx-auto">
             <div className="bg-white/10 p-6 rounded-lg">
               <h3 className="text-xl font-bold text-white mb-2">Where to find us</h3>
@@ -337,21 +287,21 @@ export default async function Home() {
                 Poughkeepsie, NY 12603
               </p>
             </div>
-            
+
             <div className="bg-white/10 p-6 rounded-lg">
               <h3 className="text-xl font-bold text-white mb-2">Call or Text us</h3>
               <p className="text-blue-100 mb-1">Monday to Friday, 7:00 – 3:30</p>
               <p className="text-blue-100">Call: 1.845.454.4795 or 1.800.732.3091</p>
               <p className="text-blue-100">Text: 1.845.419.8499</p>
             </div>
-            
+
             <div className="bg-white/10 p-6 rounded-lg">
               <h3 className="text-xl font-bold text-white mb-2">Email us</h3>
               <p className="text-blue-100">Send your questions to:</p>
               <a href="mailto:atlanticguttersupply@gmail.com" className="text-white hover:text-blue-200">atlanticguttersupply@gmail.com</a>
             </div>
           </div>
-          
+
           <div className="mt-10">
             <Link
               href="/contact"
