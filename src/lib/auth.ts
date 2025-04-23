@@ -1,8 +1,8 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import prisma from "@/lib/db";
-
+import prisma from "@/lib/prisma";
+  
 export const authOptions: NextAuthOptions = {
   // Add a secure secret key for JWT encryption
   secret: "your-secure-nextauth-secret-key-atlantic-gutter-supply",
