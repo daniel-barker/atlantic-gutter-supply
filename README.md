@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Atlantic Gutter Supply Website
+
+A modern, responsive website for Atlantic Gutter Supply, a company specializing in gutter products and accessories. This project is built with Next.js, Tailwind CSS, and Prisma.
+
+## Features
+
+- **Responsive Design**: Mobile-friendly interface that works on all devices
+- **Product Catalog**: Browse products with filtering by category
+- **Admin Panel**: Secure admin area for managing products and categories
+- **Authentication**: User authentication for admin access
+- **Database Integration**: Prisma ORM with SQLite database (can be upgraded to PostgreSQL for production)
+
+## Tech Stack
+
+- **Frontend**: Next.js 15 (React 19), Tailwind CSS 4
+- **Backend**: Next.js API Routes
+- **Database**: Prisma ORM with SQLite
+- **Authentication**: NextAuth.js
+- **Forms**: React Hook Form
+- **Styling**: Tailwind CSS with Heroicons
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ and npm
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Set up the database and seed initial data:
+
+```bash
+npx prisma generate
+npx prisma db push
+npx ts-node --project prisma/tsconfig.json prisma/seed.ts
+```
+
+4. Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the website
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Admin Access
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+After running the seed script, you can access the admin panel with these credentials:
 
-## Learn More
+- **URL**: [http://localhost:3000/admin/login](http://localhost:3000/admin/login)
+- **Email**: admin@atlanticguttersupply.com
+- **Password**: admin123
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/src/app`: Next.js app router pages and API routes
+- `/src/components`: Reusable React components
+- `/src/lib`: Utility functions and libraries
+- `/prisma`: Database schema and seed data
+- `/public`: Static assets
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## API Routes
 
-## Deploy on Vercel
+- `/api/products`: CRUD operations for products
+- `/api/categories`: CRUD operations for categories
+- `/api/auth`: Authentication endpoints
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This application can be deployed to any platform that supports Next.js applications, such as Vercel, Netlify, or a custom server.
+
+## License
+
+This project is licensed under the MIT License.
