@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "ESLINT_SKIP_WARNINGS=true next build",
-    "build:strict": "next build",
+    "build": "prisma generate && ESLINT_SKIP_WARNINGS=true next build",
+    "build:strict": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "prisma:seed": "npx ts-node prisma/seed.ts"
