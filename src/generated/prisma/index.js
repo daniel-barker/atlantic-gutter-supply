@@ -84,6 +84,9 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -125,6 +128,11 @@ exports.Prisma.ProductScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
 };
 
 exports.Prisma.NullsOrder = {
@@ -176,17 +184,18 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlite",
+  "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": null,
-        "value": "file:./dev.db"
+        "fromEnvVar": "DATABASE_URL",
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./dev.db\"\n}\n\nmodel User {\n  id        String   @id @default(cuid())\n  name      String?\n  email     String   @unique\n  password  String\n  role      String   @default(\"admin\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Category {\n  id          String    @id @default(cuid())\n  name        String\n  description String?\n  slug        String    @unique\n  createdAt   DateTime  @default(now())\n  updatedAt   DateTime  @updatedAt\n  products    Product[]\n}\n\nmodel Product {\n  id            String   @id @default(cuid())\n  name          String\n  description   String?\n  slug          String   @unique\n  price         Float?\n  sku           String?\n  imageUrl      String?\n  inStock       Boolean  @default(true)\n  featured      Boolean  @default(false)\n  featuredOrder Int? // Optional ordering for featured products\n  categoryId    String\n  category      Category @relation(fields: [categoryId], references: [id])\n  createdAt     DateTime @default(now())\n  updatedAt     DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "1250a37738e1b4aa280464c9de63081988310a73f0f9f311d295b12cc9c6d7db",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id        String   @id @default(cuid())\n  name      String?\n  email     String   @unique\n  password  String\n  role      String   @default(\"admin\")\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n\nmodel Category {\n  id          String    @id @default(cuid())\n  name        String\n  description String?\n  slug        String    @unique\n  createdAt   DateTime  @default(now())\n  updatedAt   DateTime  @updatedAt\n  products    Product[]\n}\n\nmodel Product {\n  id            String   @id @default(cuid())\n  name          String\n  description   String?\n  slug          String   @unique\n  price         Float?\n  sku           String?\n  imageUrl      String?\n  inStock       Boolean  @default(true)\n  featured      Boolean  @default(false)\n  featuredOrder Int? // Optional ordering for featured products\n  categoryId    String\n  category      Category @relation(fields: [categoryId], references: [id])\n  createdAt     DateTime @default(now())\n  updatedAt     DateTime @updatedAt\n}\n",
+  "inlineSchemaHash": "a4fd64020efcce50dccb6caeaf0be3ba3b62733f8d22be02054b36f821477872",
   "copyEngine": true
 }
 

@@ -1,7 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import { prisma } from "@/lib/prisma";
+import prisma from "@/lib/db";
 
 export const authOptions: NextAuthOptions = {
   // Add a secure secret key for JWT encryption

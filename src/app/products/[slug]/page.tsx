@@ -125,7 +125,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="mt-20">
             <h2 className="text-2xl font-bold tracking-tight text-gray-900">Related Products</h2>
             <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-              {relatedProducts.map((relatedProduct) => (
+              {relatedProducts.map((relatedProduct: any) => (
                 <div key={relatedProduct.id} className="group relative">
                   <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75">
                     <div className="h-64 w-full bg-gray-200 relative">

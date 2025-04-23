@@ -55,7 +55,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
                   All Products
                 </Link>
               </li>
-              {categories.map((category) => (
+              {categories.map((category: any) => (
                 <li key={category.id}>
                   <Link 
                     href={`/products?category=${category.slug}`} 
@@ -71,7 +71,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Pro
           {/* Product grid */}
           <div className="mt-6 lg:col-span-3 lg:mt-0">
             <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
-              {products.map((product) => (
+              {products.map((product: any) => (
                 <div key={product.id} className="group relative">
                   <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75">
                     <div className="h-64 w-full bg-gray-200 relative">
