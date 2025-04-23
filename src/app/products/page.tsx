@@ -28,9 +28,10 @@ async function getProducts(categorySlug?: string) {
   });
 }
 
-export default async function ProductsPage({ searchParams }: { searchParams: { category?: string } }) {
-  // In Next.js 14, searchParams is already ready to use (no need to await)
-  const categorySlug = searchParams?.category || '';
+export default async function ProductsPage({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
+  // In Next.js 15, searchParams is a Promise that needs to be awaited
+  const resolvedParams = await searchParams;
+  const categorySlug = resolvedParams?.category || '';
   const [categories, products] = await Promise.all([getCategories(), getProducts(categorySlug)]);
 
   return (
